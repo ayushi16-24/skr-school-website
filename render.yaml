@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: skr-school
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn school_site:application"
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.2
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com,localhost,127.0.0.1"
