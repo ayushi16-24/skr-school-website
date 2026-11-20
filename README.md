@@ -1,19 +1,40 @@
-# Sample Public School - Django Website
+# Shri Kalyan Radhey Academy (SKR School) — Website
 
-Single-file Django website: public pages, admissions forms, contact form,
-gallery, news & events, mandatory disclosure, and an admin panel.
+Single-file Django website for Shri Kalyan Radhey Academy (SKR School), Jhotwara, Jaipur.
+Features public pages, academic streams (Science, Commerce, Arts), Sainik/Military prep wing, 10m shooting academy, sports facilities, admissions forms, news & events, campus gallery, and admin panel.
 
-## Setup
+## Local Setup & Run
 
-    pip install -r requirements.txt
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Start server (automatically syncs database, loads initial data, and runs server):
+   ```bash
+   python school_site.py
+   ```
+3. Open in browser:
+   - Website: http://127.0.0.1:8000/
+   - Admin:   http://127.0.0.1:8000/admin/
 
-## Run
+4. (Optional) Create admin user:
+   ```bash
+   python school_site.py createsuperuser
+   ```
 
-    python school_site.py                    # migrate, demo data, start server
-    python school_site.py createsuperuser    # admin account (one time)
+## Render Deployment
 
-Open:
-- Website: http://127.0.0.1:8000/
-- Admin:   http://127.0.0.1:8000/admin/
+This project includes `render.yaml`, `build.sh`, and `Procfile` configured for Render:
 
-Data is stored in school.sqlite3 and uploads go to media/ (created automatically).
+1. Create a repository on GitHub (e.g. `skr-school-website`)
+2. Push your code:
+   ```bash
+   git remote add origin https://github.com/<your-username>/<repo-name>.git
+   git push -u origin main
+   ```
+3. In [Render Dashboard](https://dashboard.render.com):
+   - Click **New +** -> **Web Service**
+   - Connect your GitHub repository
+   - Render will automatically detect `render.yaml` (or choose **Python 3** environment)
+   - Build Command: `./build.sh`
+   - Start Command: `gunicorn school_site:application`
