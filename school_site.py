@@ -31,76 +31,283 @@ TEMPLATES = {
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1f4b">
 <title>{% block title %}{{ school.name }}{% endblock %}</title>
 <meta name="description" content="{% block description %}{{ school.tagline }}{% endblock %}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <style>
-:root{--navy:#0b1f4b;--royal:#1e4fd8;--light:#e8f0fe;--gold:#c9a227;--text:#1d2433}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
-body{font-family:Inter,system-ui,sans-serif;color:var(--text)}
-h1,h2,h3,h4,h5{font-family:"Playfair Display",serif;color:var(--navy)}
-.topbar{background:var(--light);color:var(--navy);font-size:.9rem;padding:.4rem 0;border:0;margin:0}
-.nav-theme{background:var(--navy);border:0;margin:0;box-shadow:none}
-.nav-theme .navbar-nav .nav-link{color:#fff;font-weight:500;padding:.6rem .85rem;font-size:.95rem;transition:color .2s}
-.nav-theme .navbar-nav .nav-link:hover,.nav-theme .navbar-nav .nav-link.active{color:var(--gold)}
-main{margin:0;padding:0;border:0}
-.btn-gold{background:var(--gold);color:var(--navy);font-weight:600;border:0}
-.btn-gold:hover{background:#b38f1f;color:#fff}
-.btn-royal{background:var(--royal);color:#fff;font-weight:600;border:0}
-.btn-royal:hover{background:var(--navy);color:#fff}
-.hero{position:relative;min-height:80vh;display:flex;align-items:center;background:linear-gradient(135deg,var(--navy),var(--royal));color:#fff;overflow:hidden}
-.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35}
-.hero .content{position:relative;padding:5rem 0}
-.hero h1{color:#fff}
-.page-head{background:var(--light);padding:3rem 0}
-.section{padding:4rem 0}
-.section-title{font-size:2rem;margin-bottom:.5rem}
-.card-soft{background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(11,31,75,.08);transition:transform .25s,box-shadow .25s;height:100%}
-.card-soft:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(11,31,75,.15)}
-.stat{background:#fff;border-radius:16px;padding:1.4rem;text-align:center;box-shadow:0 8px 24px rgba(11,31,75,.1)}
-.stat b{display:block;font-family:"Playfair Display",serif;font-size:2rem;color:var(--royal)}
-.icon{font-size:1.7rem;color:var(--royal)}
-.gallery-img{width:100%;height:200px;object-fit:cover;border-radius:12px;transition:transform .3s}
-.gallery-img:hover{transform:scale(1.03)}
-.map{width:100%;height:320px;border:0;border-radius:16px}
-.footer{background:var(--navy);color:#cfd8ea}
-.footer a{color:#cfd8ea;text-decoration:none}
-.footer a:hover{color:var(--gold)}
-@media (max-width:768px){.hero{min-height:65vh}}
+:root {
+  --navy: #0b1f4b;
+  --navy-dark: #071533;
+  --royal: #1e4fd8;
+  --royal-dark: #153bb0;
+  --light: #e8f0fe;
+  --gold: #d4a017;
+  --gold-hover: #b8860b;
+  --text: #1d2433;
+  --muted: #5a6578;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-x: hidden; }
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: 70px;
+}
+@media (min-width: 992px) { body { padding-bottom: 0; } }
+h1, h2, h3, h4, h5, h6 { font-family: "Playfair Display", serif; color: var(--navy); font-weight: 700; }
+main { min-height: 50vh; }
+
+/* Topbar */
+.topbar { background: var(--light); color: var(--navy); font-size: 0.82rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(11,31,75,0.08); }
+.topbar a { color: var(--navy); text-decoration: none; transition: color 0.2s; }
+.topbar a:hover { color: var(--royal); }
+
+/* Navbar */
+.nav-theme { background: var(--navy); border-bottom: 2px solid var(--gold); box-shadow: 0 4px 18px rgba(11,31,75,0.15); z-index: 1030; }
+.brand-badge {
+  width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(212,160,23,0.5); font-size: 1.15rem; flex-shrink: 0;
+}
+.brand-title { font-family: "Playfair Display", serif; font-size: 1.15rem; line-height: 1.15; color: #fff; letter-spacing: 0.3px; }
+.brand-subtitle { font-size: 0.72rem; color: var(--gold); line-height: 1; letter-spacing: 0.4px; font-weight: 500; }
+.navbar-toggler { border: 1px solid rgba(255,255,255,0.25); padding: 0.35rem 0.6rem; border-radius: 8px; }
+.navbar-toggler:focus { box-shadow: 0 0 0 0.2rem rgba(212,160,23,0.25); }
+.nav-theme .navbar-nav .nav-link {
+  color: #f0f4ff; font-weight: 500; padding: 0.55rem 0.8rem; font-size: 0.92rem;
+  border-radius: 6px; transition: all 0.2s ease;
+}
+.nav-theme .navbar-nav .nav-link:hover, .nav-theme .navbar-nav .nav-link.active {
+  color: var(--gold); background: rgba(255,255,255,0.08);
+}
+
+@media (max-width: 991.98px) {
+  .nav-theme .navbar-collapse {
+    background: var(--navy-dark); padding: 1rem 0.85rem; border-radius: 14px;
+    margin-top: 0.75rem; box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-theme .navbar-nav .nav-link {
+    padding: 0.7rem 1rem; font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center;
+  }
+  .nav-theme .navbar-nav .nav-link i { width: 26px; color: var(--gold); margin-right: 8px; }
+  .nav-theme .navbar-nav .nav-item:last-child .nav-link { border-bottom: none; }
+  .nav-apply-btn { margin-top: 0.75rem; width: 100%; text-align: center; padding: 0.65rem !important; }
+}
+
+/* Buttons */
+.btn-gold {
+  background: var(--gold); color: var(--navy); font-weight: 600; border: 0;
+  border-radius: 8px; box-shadow: 0 3px 10px rgba(212,160,23,0.3); transition: all 0.2s ease;
+}
+.btn-gold:hover { background: var(--gold-hover); color: #fff; transform: translateY(-1px); }
+.btn-gold:active { transform: translateY(0); }
+.btn-royal {
+  background: var(--royal); color: #fff; font-weight: 600; border: 0;
+  border-radius: 8px; box-shadow: 0 3px 10px rgba(30,79,216,0.3); transition: all 0.2s ease;
+}
+.btn-royal:hover { background: var(--royal-dark); color: #fff; transform: translateY(-1px); }
+.btn-royal:active { transform: translateY(0); }
+
+/* Hero Section */
+.hero {
+  position: relative; min-height: 72vh; display: flex; align-items: center;
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--royal-dark) 100%);
+  color: #fff; overflow: hidden;
+}
+.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.28; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,21,51,0.35) 0%, rgba(7,21,51,0.85) 100%); }
+.hero .content { position: relative; padding: 4.5rem 0 5.5rem; z-index: 2; }
+.hero-title { font-size: clamp(1.8rem, 5.5vw, 3.2rem); line-height: 1.15; color: #fff; margin-bottom: 0.85rem; }
+.hero-subtitle { font-size: clamp(0.95rem, 2.3vw, 1.25rem); color: rgba(255,255,255,0.92); line-height: 1.5; max-width: 720px; margin-bottom: 1.5rem; }
+
+@media (max-width: 768px) {
+  .hero { min-height: auto; text-align: center; }
+  .hero .content { padding: 2.75rem 0.75rem 4rem; }
+  .hero-buttons { flex-direction: column; align-items: stretch; max-width: 320px; margin-left: auto; margin-right: auto; }
+  .hero-buttons .btn { width: 100%; padding: 0.75rem 1rem; font-size: 1rem; }
+}
+
+/* Stats */
+.stats-container { margin-top: -2.5rem; position: relative; z-index: 10; }
+.stat {
+  background: #fff; border-radius: 14px; padding: 1.15rem 0.85rem; text-align: center;
+  box-shadow: 0 8px 24px rgba(11,31,75,0.1); border: 1px solid rgba(11,31,75,0.05);
+  height: 100%; display: flex; flex-direction: column; justify-content: center;
+}
+.stat b {
+  display: block; font-family: "Playfair Display", serif;
+  font-size: clamp(1.25rem, 3.8vw, 1.85rem); color: var(--royal); line-height: 1.15; margin-bottom: 0.25rem;
+}
+.stat .stat-label { font-size: 0.78rem; color: var(--muted); line-height: 1.25; }
+
+@media (max-width: 576px) {
+  .stats-container { margin-top: -1.75rem; }
+  .stat { padding: 0.75rem 0.45rem; border-radius: 12px; }
+  .stat b { font-size: 1.2rem; }
+  .stat .stat-label { font-size: 0.72rem; }
+}
+
+/* Page head & sections */
+.page-head { background: var(--light); padding: 2.5rem 0; border-bottom: 1px solid rgba(11,31,75,0.06); }
+.section { padding: 3.5rem 0; }
+.section-title { font-size: clamp(1.45rem, 3.5vw, 2.1rem); margin-bottom: 0.5rem; }
+
+@media (max-width: 768px) {
+  .page-head { padding: 1.75rem 0; text-align: center; }
+  .section { padding: 2.25rem 0; }
+}
+
+/* Cards */
+.card-soft {
+  background: #fff; border-radius: 16px; box-shadow: 0 6px 20px rgba(11,31,75,0.07);
+  transition: transform 0.25s, box-shadow 0.25s; height: 100%; border: 1px solid rgba(11,31,75,0.05);
+}
+@media (hover: hover) {
+  .card-soft:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(11,31,75,0.13); }
+}
+@media (max-width: 768px) {
+  .card-soft { border-radius: 14px; padding: 1.15rem !important; }
+}
+.icon { font-size: 1.6rem; color: var(--royal); }
+
+/* Gallery */
+.gallery-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; transition: transform 0.3s; }
+@media (hover: hover) { .gallery-img:hover { transform: scale(1.03); } }
+@media (max-width: 576px) { .gallery-img { border-radius: 8px; } }
+
+/* Category bar */
+.category-scroll-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+@media (max-width: 768px) {
+  .category-scroll-bar {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem; scrollbar-width: none;
+  }
+  .category-scroll-bar::-webkit-scrollbar { display: none; }
+  .category-scroll-bar .btn {
+    white-space: nowrap; font-size: 0.85rem; padding: 0.4rem 0.85rem; border-radius: 20px; flex-shrink: 0;
+  }
+}
+
+/* Forms */
+.form-label { font-weight: 600; font-size: 0.9rem; color: var(--navy); margin-bottom: 0.35rem; }
+.form-control, .form-select {
+  font-size: 16px !important;
+  padding: 0.65rem 0.85rem; border-radius: 10px; border: 1px solid #c7d2e8; min-height: 44px;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--royal); box-shadow: 0 0 0 0.2rem rgba(30,79,216,0.18);
+}
+@media (max-width: 768px) {
+  .btn-submit-mobile { width: 100% !important; }
+}
+
+/* Map */
+.map { width: 100%; height: 320px; border: 0; border-radius: 16px; }
+@media (max-width: 768px) { .map { height: 240px; border-radius: 12px; } }
+
+/* Footer */
+.footer { background: var(--navy-dark); color: #cfd8ea; }
+.footer a { color: #cfd8ea; text-decoration: none; transition: color 0.2s; }
+.footer a:hover { color: var(--gold); }
+@media (max-width: 768px) {
+  .footer { text-align: center; }
+  .footer .list-unstyled li { padding: 0.35rem 0; }
+}
+
+/* Mobile Sticky Bottom Bar */
+.mobile-bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 1040;
+  background: #ffffff; border-top: 1px solid rgba(11,31,75,0.1);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+}
+.mobile-bottom-bar .bottom-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 0.72rem; font-weight: 600; color: var(--navy);
+  padding: 0.3rem 0.45rem; border-radius: 8px; flex: 1; text-align: center;
+  transition: background 0.15s;
+}
+.mobile-bottom-bar .bottom-btn i { font-size: 1.15rem; margin-bottom: 2px; color: var(--royal); }
+.mobile-bottom-bar .bottom-btn.btn-call i { color: #198754; }
+.mobile-bottom-bar .bottom-btn.btn-apply-cta {
+  background: linear-gradient(135deg, var(--gold), #b8860b);
+  color: var(--navy); box-shadow: 0 2px 8px rgba(212,160,23,0.35);
+  padding: 0.45rem 0.65rem; border-radius: 10px; flex: 1.35;
+}
+.mobile-bottom-bar .bottom-btn.btn-apply-cta i { color: var(--navy); }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="container d-flex flex-wrap justify-content-between gap-2">
-    <span><i class="fa-solid fa-phone me-1"></i>{{ school.phone }}</span>
-    <span><i class="fa-solid fa-envelope me-1"></i>{{ school.email }}</span>
-    <span><i class="fa-regular fa-clock me-1"></i>{{ school.working_hours }}</span>
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <!-- Desktop topbar -->
+    <div class="d-none d-md-flex align-items-center gap-3">
+      <span><a href="tel:{{ school.phone|slice:':12' }}"><i class="fa-solid fa-phone me-1 text-primary"></i>{{ school.phone }}</a></span>
+      <span><a href="mailto:{{ school.email }}"><i class="fa-solid fa-envelope me-1 text-primary"></i>{{ school.email }}</a></span>
+    </div>
+    <div class="d-none d-md-flex align-items-center gap-2">
+      <span><i class="fa-regular fa-clock me-1 text-primary"></i>{{ school.working_hours }}</span>
+      {% if school.admissions_open %}
+        <span class="badge bg-gold text-navy ms-2">Admissions Open 2027-28</span>
+      {% endif %}
+    </div>
+
+    <!-- Mobile compact topbar -->
+    <div class="d-flex d-md-none justify-content-between align-items-center w-100 py-1">
+      <a href="tel:{{ school.phone|slice:':12' }}" class="fw-semibold small">
+        <i class="fa-solid fa-phone me-1 text-success"></i>Call School
+      </a>
+      {% if school.admissions_open %}
+        <a href="{% url 'apply' %}" class="badge bg-gold text-navy text-decoration-none px-2 py-1">
+          <i class="fa-solid fa-bell me-1"></i>Admissions Open
+        </a>
+      {% endif %}
+      <a href="{% url 'contact' %}" class="small text-navy">
+        <i class="fa-solid fa-location-dot me-1 text-danger"></i>Kalwar Rd
+      </a>
+    </div>
   </div>
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top nav-theme py-2">
   <div class="container">
-    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand d-flex align-items-center gap-2 py-1" href="{% url 'home' %}">
+      <div class="brand-badge">
+        <i class="fa-solid fa-graduation-cap text-gold"></i>
+      </div>
+      <div class="brand-text text-start">
+        <span class="d-block fw-bold brand-title">SKR Academy</span>
+        <span class="d-block brand-subtitle">Sr. Sec. School · Jaipur</span>
+      </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-center" id="mainNav">
-      <ul class="navbar-nav align-items-lg-center flex-wrap justify-content-center">
-        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'academics' %}">Academics</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'infrastructure' %}">Infrastructure</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'admissions' %}">Admissions</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'achievements' %}">Achievements</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'news' %}">News &amp; Events</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'disclosure' %}">Disclosure</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-        <li class="nav-item ms-lg-2 my-1"><a class="btn btn-gold btn-sm px-3" href="{% url 'apply' %}">Apply Now</a></li>
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house d-lg-none"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"><i class="fa-solid fa-circle-info d-lg-none"></i>About</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'academics' %}"><i class="fa-solid fa-book-open d-lg-none"></i>Academics</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'infrastructure' %}"><i class="fa-solid fa-building-columns d-lg-none"></i>Infrastructure</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'admissions' %}"><i class="fa-solid fa-user-plus d-lg-none"></i>Admissions</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'achievements' %}"><i class="fa-solid fa-trophy d-lg-none"></i>Achievements</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'news' %}"><i class="fa-solid fa-newspaper d-lg-none"></i>News &amp; Events</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}"><i class="fa-solid fa-images d-lg-none"></i>Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'disclosure' %}"><i class="fa-solid fa-file-shield d-lg-none"></i>Disclosure</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}"><i class="fa-solid fa-envelope d-lg-none"></i>Contact</a></li>
+        <li class="nav-item ms-lg-2 my-1"><a class="btn btn-gold btn-sm px-3 nav-apply-btn" href="{% url 'apply' %}">Apply Now</a></li>
       </ul>
     </div>
   </div>
@@ -123,12 +330,12 @@ main{margin:0;padding:0;border:0}
 <footer class="footer">
   <div class="container py-5">
     <div class="row g-4">
-      <div class="col-md-4">
+      <div class="col-12 col-md-4">
         <h5 class="text-white">{{ school.name }}</h5>
         <p class="small">{{ school.address }}</p>
         {% if school.affiliation_no %}<p class="small mb-0">CBSE Affiliation No.: {{ school.affiliation_no }}</p>{% endif %}
       </div>
-      <div class="col-md-4">
+      <div class="col-12 col-md-4">
         <h6 class="text-white">Quick Links</h6>
         <ul class="list-unstyled small">
           <li><a href="{% url 'enquiry' %}">Admission Enquiry</a></li>
@@ -137,16 +344,37 @@ main{margin:0;padding:0;border:0}
           <li><a href="{% url 'contact' %}">Contact Us</a></li>
         </ul>
       </div>
-      <div class="col-md-4 small">
+      <div class="col-12 col-md-4 small">
         <h6 class="text-white">Contact</h6>
-        <p class="mb-1"><i class="fa-solid fa-phone me-2"></i>{{ school.phone }}</p>
-        <p><i class="fa-solid fa-envelope me-2"></i>{{ school.email }}</p>
+        <p class="mb-1"><a href="tel:{{ school.phone|slice:':12' }}"><i class="fa-solid fa-phone me-2 text-gold"></i>{{ school.phone }}</a></p>
+        <p><a href="mailto:{{ school.email }}"><i class="fa-solid fa-envelope me-2 text-gold"></i>{{ school.email }}</a></p>
+        <p class="mb-0 text-muted">{{ school.working_hours }}</p>
       </div>
     </div>
-    <hr class="border-secondary">
+    <hr class="border-secondary my-4">
     <p class="small text-center mb-0">&copy; {% now "Y" %} {{ school.name }}. All rights reserved.</p>
   </div>
 </footer>
+
+<!-- Mobile Sticky Bottom Bar -->
+<div class="mobile-bottom-bar d-lg-none">
+  <a href="tel:{{ school.phone|slice:':12' }}" class="bottom-btn btn-call">
+    <i class="fa-solid fa-phone"></i>
+    <span>Call Now</span>
+  </a>
+  <a href="{% url 'enquiry' %}" class="bottom-btn">
+    <i class="fa-solid fa-circle-question"></i>
+    <span>Enquiry</span>
+  </a>
+  <a href="{% url 'contact' %}" class="bottom-btn">
+    <i class="fa-solid fa-location-dot"></i>
+    <span>Visit Us</span>
+  </a>
+  <a href="{% url 'apply' %}" class="bottom-btn btn-apply-cta">
+    <i class="fa-solid fa-file-pen"></i>
+    <span>Apply Online</span>
+  </a>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
@@ -155,10 +383,10 @@ main{margin:0;padding:0;border:0}
 
     "pagination.html": """{% if page.has_other_pages %}
 <nav class="mt-4">
-  <ul class="pagination justify-content-center">
-    {% if page.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a></li>{% endif %}
-    <li class="page-item active"><span class="page-link">{{ page.number }} / {{ page.paginator.num_pages }}</span></li>
-    {% if page.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Next</a></li>{% endif %}
+  <ul class="pagination pagination-sm justify-content-center flex-wrap gap-1">
+    {% if page.has_previous %}<li class="page-item"><a class="page-link rounded-2" href="?page={{ page.previous_page_number }}">Previous</a></li>{% endif %}
+    <li class="page-item active"><span class="page-link rounded-2">{{ page.number }} / {{ page.paginator.num_pages }}</span></li>
+    {% if page.has_next %}<li class="page-item"><a class="page-link rounded-2" href="?page={{ page.next_page_number }}">Next</a></li>{% endif %}
   </ul>
 </nav>
 {% endif %}
@@ -167,11 +395,11 @@ main{margin:0;padding:0;border:0}
     "form_fields.html": """{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
 <div class="row g-3">
   {% for field in form %}
-    <div class="col-md-6">
+    <div class="col-12 col-md-6">
       <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
       {{ field }}
       {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
-      {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+      {% if field.help_text %}<div class="form-text small">{{ field.help_text }}</div>{% endif %}
     </div>
   {% endfor %}
 </div>
@@ -181,58 +409,60 @@ main{margin:0;padding:0;border:0}
 {% block content %}
 <section class="hero">
   {% if school.hero_image %}<img src="{{ school.hero_image.url }}" alt="{{ school.name }} campus">{% endif %}
+  <div class="hero-overlay"></div>
   <div class="container content text-white">
-    {% if school.admissions_open %}<span class="badge bg-warning text-dark mb-3">Admissions Open</span>{% endif %}
-    <h1 class="display-4 fw-bold">{{ school.name }}</h1>
-    <p class="lead">{{ school.tagline }}</p>
-    <div class="d-flex flex-wrap gap-2">
-      <a href="{% url 'apply' %}" class="btn btn-gold btn-lg">Apply Now</a>
-      <a href="#about" class="btn btn-outline-light btn-lg">Explore School</a>
+    {% if school.admissions_open %}<span class="badge bg-warning text-dark mb-3 px-3 py-2 fw-bold"><i class="fa-solid fa-bell me-1"></i>Admissions Open 2027-28</span>{% endif %}
+    <h1 class="hero-title">{{ school.name }}</h1>
+    <p class="hero-subtitle">{{ school.tagline }}</p>
+    <div class="d-flex flex-wrap gap-2 hero-buttons">
+      <a href="{% url 'apply' %}" class="btn btn-gold btn-lg"><i class="fa-solid fa-file-pen me-2"></i>Apply Online</a>
+      <a href="{% url 'enquiry' %}" class="btn btn-outline-light btn-lg"><i class="fa-solid fa-circle-question me-2"></i>Admission Enquiry</a>
+      <a href="#about" class="btn btn-outline-light btn-lg d-none d-md-inline-block">Explore School</a>
     </div>
   </div>
 </section>
 
-<section class="container" style="margin-top:-3rem;position:relative">
-  <div class="row g-3">
-    <div class="col-6 col-md-3"><div class="stat"><b>{{ school.years_of_excellence }}+ Years</b>Est. 2009 in Jhotwara</div></div>
-    <div class="col-6 col-md-3"><div class="stat"><b>Pre-K to 12th</b>Science, Commerce &amp; Arts</div></div>
-    <div class="col-6 col-md-3"><div class="stat"><b>92%</b>Parent Recommendation</div></div>
-    <div class="col-6 col-md-3"><div class="stat"><b>10m Range</b>Shooting &amp; Sports Academy</div></div>
+<section class="container stats-container">
+  <div class="row g-2 g-md-3">
+    <div class="col-6 col-md-3"><div class="stat"><b>{{ school.years_of_excellence }}+ Years</b><span class="stat-label">Est. 2009 in Jhotwara</span></div></div>
+    <div class="col-6 col-md-3"><div class="stat"><b>Pre-K to 12th</b><span class="stat-label">Science, Commerce &amp; Arts</span></div></div>
+    <div class="col-6 col-md-3"><div class="stat"><b>92%</b><span class="stat-label">Parent Recommendation</span></div></div>
+    <div class="col-6 col-md-3"><div class="stat"><b>10m Range</b><span class="stat-label">Shooting &amp; Sports Academy</span></div></div>
   </div>
 </section>
 
 <section id="about" class="section container">
-  <div class="text-center mb-5">
+  <div class="text-center mb-4 mb-md-5">
     <h2 class="section-title">About Our School</h2>
     <p class="text-muted mx-auto" style="max-width:760px">{{ school.about_intro }}</p>
-    <a href="{% url 'about' %}" class="btn btn-royal">Read more</a>
+    <a href="{% url 'about' %}" class="btn btn-royal">Read More About Us</a>
   </div>
-  <div class="row g-4">
-    <div class="col-md-6 col-lg-3">
-      <div class="card-soft p-4 border-top border-4" style="border-color:var(--navy)!important">
+  <div class="row g-3 g-md-4">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-soft p-3 p-md-4 border-top border-4" style="border-color:var(--navy)!important">
         <i class="fa-solid fa-graduation-cap icon mb-3"></i>
-        <h5>Senior Secondary Streams</h5>
+        <h5 class="h6 fw-bold mb-2">Senior Secondary Streams</h5>
         <p class="small text-muted mb-0">Science (PCM/PCB), Commerce, and Arts streams with modern physics, chemistry, biology, and IT laboratories.</p>
       </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card-soft p-4 border-top border-4" style="border-color:var(--royal)!important">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-soft p-3 p-md-4 border-top border-4" style="border-color:var(--royal)!important">
         <i class="fa-solid fa-shield-halved icon mb-3"></i>
-        <h5>Sainik / Military Prep</h5>
+        <h5 class="h6 fw-bold mb-2">Sainik / Military Prep</h5>
         <p class="small text-muted mb-0">Structured discipline, obstacle courses, leadership drills, and specialized entrance coaching for Sainik &amp; military schools.</p>
       </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card-soft p-4 border-top border-4" style="border-color:var(--gold)!important">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-soft p-3 p-md-4 border-top border-4" style="border-color:var(--gold)!important">
         <i class="fa-solid fa-crosshairs icon mb-3"></i>
-        <h5>10m Shooting &amp; Sports</h5>
+        <h5 class="h6 fw-bold mb-2">10m Shooting &amp; Sports</h5>
         <p class="small text-muted mb-0">Dedicated indoor 10-meter air pistol/rifle shooting range, basketball courts, cricket academy, and indoor games.</p>
       </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card-soft p-4 border-top border-4" style="border-color:var(--royal)!important">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-soft p-3 p-md-4 border-top border-4" style="border-color:var(--royal)!important">
         <i class="fa-solid fa-heart-circle-check icon mb-3"></i>
-        <h5>92% Recommended &amp; Affordable</h5>
+        <h5 class="h6 fw-bold mb-2">92% Recommended &amp; Affordable</h5>
         <p class="small text-muted mb-0">Peaceful residential location off Kalwar Road, acclaimed for disciplined atmosphere, character building, and affordable fees.</p>
       </div>
     </div>
@@ -241,11 +471,11 @@ main{margin:0;padding:0;border:0}
 
 <section class="section container pt-0">
   <h2 class="section-title text-center mb-4">Academic Programs</h2>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for p in programs %}
-    <div class="col-md-6 col-lg-3"><div class="card-soft p-4">
+    <div class="col-12 col-sm-6 col-lg-3"><div class="card-soft p-3 p-md-4">
       <i class="fa-solid {{ p.icon }} icon mb-3"></i>
-      <h5>{{ p.title }}</h5>
+      <h5 class="h6 fw-bold mb-2">{{ p.title }}</h5>
       <p class="small text-muted mb-0">{{ p.description }}</p>
     </div></div>
     {% empty %}<p class="text-muted">Academic programs jald add honge.</p>
@@ -255,11 +485,13 @@ main{margin:0;padding:0;border:0}
 
 {% if school.principal_message %}
 <section class="section" style="background:var(--light)">
-  <div class="container row align-items-center g-4">
-    <div class="col-md-8">
-      <h2 class="section-title">Principal's Message</h2>
-      <p class="lead">{{ school.principal_message|linebreaksbr }}</p>
-      <p class="fw-semibold mb-0">{{ school.principal_name }}</p>
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-12 col-md-10 mx-auto text-center text-md-start">
+        <h2 class="section-title mb-3">Principal's Message</h2>
+        <p class="lead mb-3" style="font-size:clamp(1rem, 2vw, 1.25rem); line-height:1.6">{{ school.principal_message|linebreaksbr }}</p>
+        <p class="fw-bold text-navy mb-0">— {{ school.principal_name }}</p>
+      </div>
     </div>
   </div>
 </section>
@@ -267,25 +499,25 @@ main{margin:0;padding:0;border:0}
 
 <section class="section container">
   <h2 class="section-title text-center mb-4">Infrastructure Highlights</h2>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for f in facilities %}
-    <div class="col-md-6 col-lg-4"><div class="card-soft p-4">
+    <div class="col-12 col-sm-6 col-lg-4"><div class="card-soft p-3 p-md-4">
       <i class="fa-solid {{ f.icon }} icon mb-3"></i>
-      <h5>{{ f.title }}</h5>
+      <h5 class="h6 fw-bold mb-2">{{ f.title }}</h5>
       <p class="small text-muted mb-0">{{ f.description }}</p>
     </div></div>
     {% endfor %}
   </div>
-  <div class="text-center mt-4"><a href="{% url 'infrastructure' %}" class="btn btn-royal">All facilities</a></div>
+  <div class="text-center mt-4"><a href="{% url 'infrastructure' %}" class="btn btn-royal">View All Facilities</a></div>
 </section>
 
 <section class="section container pt-0">
   <h2 class="section-title text-center mb-4">Student Achievements</h2>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for a in achievements %}
-    <div class="col-md-4"><div class="card-soft p-4">
+    <div class="col-12 col-sm-6 col-md-4"><div class="card-soft p-3 p-md-4">
       <span class="badge bg-light text-primary mb-2">{{ a.get_category_display }} · {{ a.year }}</span>
-      <h5>{{ a.title }}</h5>
+      <h5 class="h6 fw-bold mb-2">{{ a.title }}</h5>
       <p class="small text-muted mb-0">{% if a.student_name %}{{ a.student_name }} — {% endif %}{{ a.description }}</p>
     </div></div>
     {% empty %}<p class="text-muted">Achievements jald add honge.</p>
@@ -295,43 +527,45 @@ main{margin:0;padding:0;border:0}
 
 <section class="section container pt-0">
   <h2 class="section-title text-center mb-4">News &amp; Events</h2>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for n in news %}
-    <div class="col-md-4"><div class="card-soft p-4">
+    <div class="col-12 col-md-6 col-lg-4"><div class="card-soft p-3 p-md-4">
       <small class="text-muted">{{ n.date|date:"d M Y" }}</small>
-      <h5 class="mt-1">{{ n.title }}</h5>
+      <h5 class="h6 fw-bold mt-1 mb-2">{{ n.title }}</h5>
       <p class="small text-muted mb-0">{{ n.body|truncatewords:25 }}</p>
     </div></div>
     {% endfor %}
     {% for e in events %}
-    <div class="col-md-4"><div class="card-soft p-4 border-start border-4" style="border-color:var(--gold)!important">
+    <div class="col-12 col-md-6 col-lg-4"><div class="card-soft p-3 p-md-4 border-start border-4" style="border-color:var(--gold)!important">
       <small class="text-muted">Upcoming · {{ e.event_date|date:"d M Y" }}</small>
-      <h5 class="mt-1">{{ e.title }}</h5>
+      <h5 class="h6 fw-bold mt-1 mb-2">{{ e.title }}</h5>
       <p class="small text-muted mb-0">{{ e.venue }}</p>
     </div></div>
     {% endfor %}
   </div>
-  <div class="text-center mt-4"><a href="{% url 'news' %}" class="btn btn-royal">All news &amp; events</a></div>
+  <div class="text-center mt-4"><a href="{% url 'news' %}" class="btn btn-royal">All News &amp; Events</a></div>
 </section>
 
 <section class="section container pt-0">
   <h2 class="section-title text-center mb-4">Campus Gallery</h2>
-  <div class="row g-3">
+  <div class="row g-2 g-md-3">
     {% for g in gallery %}
+    {% if g.image %}
     <div class="col-6 col-md-4"><a href="{{ g.image.url }}" target="_blank" rel="noopener"><img class="gallery-img" src="{{ g.image.url }}" alt="{{ g.alt_text|default:g.caption }}"></a></div>
+    {% endif %}
     {% empty %}<p class="text-muted">Gallery jald add hogi.</p>
     {% endfor %}
   </div>
-  <div class="text-center mt-4"><a href="{% url 'gallery' %}" class="btn btn-royal">Full gallery</a></div>
+  <div class="text-center mt-4"><a href="{% url 'gallery' %}" class="btn btn-royal">View Full Gallery</a></div>
 </section>
 
 <section class="section container pt-0">
   <h2 class="section-title text-center mb-4">What Parents Say</h2>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for t in testimonials %}
-    <div class="col-md-4"><div class="card-soft p-4">
-      <p class="fst-italic">"{{ t.message }}"</p>
-      <p class="fw-semibold mb-0">{{ t.author_name }}</p>
+    <div class="col-12 col-md-4"><div class="card-soft p-3 p-md-4">
+      <p class="fst-italic small mb-3">"{{ t.message }}"</p>
+      <p class="fw-bold mb-0 text-navy">{{ t.author_name }}</p>
       <p class="small text-muted mb-0">{{ t.relation }}</p>
     </div></div>
     {% empty %}<p class="text-muted">Testimonials jald add honge.</p>
@@ -344,20 +578,20 @@ main{margin:0;padding:0;border:0}
     "about.html": """{% extends "base.html" %}
 {% block title %}About Us | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">About Us</h1><p class="mb-0">{{ school.about_intro }}</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">About Us</h1><p class="mb-0 text-muted">{{ school.about_intro }}</p></div></section>
 <section class="section container">
-  <div class="row g-4">
-    <div class="col-md-6"><div class="card-soft p-4 h-auto"><h3 class="h4"><i class="fa-solid fa-landmark icon me-2" style="font-size:1.3rem"></i>History &amp; Establishment</h3><p class="mb-0">{{ school.history|linebreaksbr }}</p></div></div>
-    <div class="col-md-6"><div class="card-soft p-4 h-auto"><h3 class="h4"><i class="fa-solid fa-eye icon me-2" style="font-size:1.3rem"></i>Vision</h3><p class="mb-0">{{ school.vision|linebreaksbr }}</p></div></div>
-    <div class="col-md-6"><div class="card-soft p-4 h-auto"><h3 class="h4"><i class="fa-solid fa-bullseye icon me-2" style="font-size:1.3rem"></i>Mission</h3><p class="mb-0">{{ school.mission|linebreaksbr }}</p></div></div>
-    <div class="col-md-6"><div class="card-soft p-4 h-auto"><h3 class="h4"><i class="fa-solid fa-seedling icon me-2" style="font-size:1.3rem"></i>Philosophy</h3><p class="mb-0">{{ school.philosophy|linebreaksbr }}</p></div></div>
+  <div class="row g-3 g-md-4">
+    <div class="col-12 col-md-6"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-landmark icon me-2" style="font-size:1.3rem"></i>History &amp; Establishment</h3><p class="mb-0 small">{{ school.history|linebreaksbr }}</p></div></div>
+    <div class="col-12 col-md-6"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-eye icon me-2" style="font-size:1.3rem"></i>Vision</h3><p class="mb-0 small">{{ school.vision|linebreaksbr }}</p></div></div>
+    <div class="col-12 col-md-6"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-bullseye icon me-2" style="font-size:1.3rem"></i>Mission</h3><p class="mb-0 small">{{ school.mission|linebreaksbr }}</p></div></div>
+    <div class="col-12 col-md-6"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-seedling icon me-2" style="font-size:1.3rem"></i>Philosophy</h3><p class="mb-0 small">{{ school.philosophy|linebreaksbr }}</p></div></div>
   </div>
 </section>
 {% if school.principal_message %}
-<section class="section" style="background:var(--light)"><div class="container">
-  <h2 class="section-title">Principal's Message</h2>
-  <p class="lead">{{ school.principal_message|linebreaksbr }}</p>
-  <p class="fw-semibold mb-0">{{ school.principal_name }}</p>
+<section class="section" style="background:var(--light)"><div class="container text-center text-md-start">
+  <h2 class="section-title mb-3">Principal's Message</h2>
+  <p class="lead mb-3" style="font-size:clamp(1rem, 2vw, 1.25rem); line-height:1.6">{{ school.principal_message|linebreaksbr }}</p>
+  <p class="fw-bold text-navy mb-0">— {{ school.principal_name }}</p>
 </div></section>
 {% endif %}
 {% endblock %}
@@ -366,15 +600,15 @@ main{margin:0;padding:0;border:0}
     "academics.html": """{% extends "base.html" %}
 {% block title %}Academics | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">Academics</h1><p class="mb-0">Pre-Primary se Senior Secondary tak ki classes, subjects aur gatividhiyan.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Academics</h1><p class="mb-0 text-muted">Pre-Primary se Senior Secondary tak ki classes, streams aur curriculum.</p></div></section>
 <section class="section container">
   {% for label, items in groups %}
-    <h2 class="section-title mt-4">{{ label }}</h2>
-    <div class="row g-4 mb-4">
+    <h2 class="section-title mt-4 mb-3" style="font-size:clamp(1.3rem, 3vw, 1.75rem)">{{ label }}</h2>
+    <div class="row g-3 g-md-4 mb-4">
       {% for p in items %}
-      <div class="col-md-6 col-lg-4"><div class="card-soft p-4">
+      <div class="col-12 col-sm-6 col-lg-4"><div class="card-soft p-3 p-md-4">
         <i class="fa-solid {{ p.icon }} icon mb-3"></i>
-        <h5>{{ p.title }}</h5>
+        <h5 class="h6 fw-bold mb-2">{{ p.title }}</h5>
         <p class="small text-muted mb-0">{{ p.description }}</p>
       </div></div>
       {% empty %}<p class="text-muted">Jald add hoga.</p>
@@ -388,13 +622,13 @@ main{margin:0;padding:0;border:0}
     "infrastructure.html": """{% extends "base.html" %}
 {% block title %}Infrastructure | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">Infrastructure</h1><p class="mb-0">Smart classrooms, labs, library, sports aur suraksha.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Infrastructure</h1><p class="mb-0 text-muted">Smart classrooms, laboratories, 10m shooting range, sports academy aur campus security.</p></div></section>
 <section class="section container">
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for f in facilities %}
-    <div class="col-md-6 col-lg-4"><div class="card-soft p-4">
+    <div class="col-12 col-sm-6 col-lg-4"><div class="card-soft p-3 p-md-4">
       <i class="fa-solid {{ f.icon }} icon mb-3"></i>
-      <h5>{{ f.title }}</h5>
+      <h5 class="h6 fw-bold mb-2">{{ f.title }}</h5>
       <p class="small text-muted mb-0">{{ f.description }}</p>
     </div></div>
     {% empty %}<p class="text-muted">Facilities ki jaankari jald add hogi.</p>
@@ -407,18 +641,20 @@ main{margin:0;padding:0;border:0}
     "admissions.html": """{% extends "base.html" %}
 {% block title %}Admissions | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container">
+<section class="page-head"><div class="container text-center text-md-start">
   <h1 class="section-title">Admissions</h1>
-  {% if school.admissions_open %}<span class="badge bg-warning text-dark mb-2">Admissions Open</span>{% endif %}
-  <p class="mb-3">Apne bachche ke liye admission ki prakriya, patrata aur zaruri documents yahan dekhein.</p>
-  <a href="{% url 'enquiry' %}" class="btn btn-royal me-2">Admission Enquiry</a>
-  <a href="{% url 'apply' %}" class="btn btn-gold">Apply Online</a>
+  {% if school.admissions_open %}<span class="badge bg-warning text-dark mb-2 px-3 py-2 fw-bold">Admissions Open 2027-28</span>{% endif %}
+  <p class="mb-3 text-muted">Apne bachche ke admission ke liye eligibility, procedure aur documents yahan dekhein.</p>
+  <div class="d-flex flex-column flex-sm-row gap-2">
+    <a href="{% url 'apply' %}" class="btn btn-gold btn-lg"><i class="fa-solid fa-file-pen me-2"></i>Apply Online</a>
+    <a href="{% url 'enquiry' %}" class="btn btn-royal btn-lg"><i class="fa-solid fa-circle-question me-2"></i>Admission Enquiry</a>
+  </div>
 </div></section>
 <section class="section container">
-  <div class="row g-4">
-    <div class="col-md-4"><div class="card-soft p-4 h-auto"><h3 class="h5">Admission Procedure</h3><p class="mb-0">{{ school.admission_procedure|linebreaksbr }}</p></div></div>
-    <div class="col-md-4"><div class="card-soft p-4 h-auto"><h3 class="h5">Eligibility Criteria</h3><p class="mb-0">{{ school.eligibility|linebreaksbr }}</p></div></div>
-    <div class="col-md-4"><div class="card-soft p-4 h-auto"><h3 class="h5">Required Documents</h3><p class="mb-0">{{ school.documents_required|linebreaksbr }}</p></div></div>
+  <div class="row g-3 g-md-4">
+    <div class="col-12 col-md-4"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-list-check text-royal me-2"></i>Admission Procedure</h3><p class="mb-0 small">{{ school.admission_procedure|linebreaksbr }}</p></div></div>
+    <div class="col-12 col-md-4"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-user-check text-royal me-2"></i>Eligibility Criteria</h3><p class="mb-0 small">{{ school.eligibility|linebreaksbr }}</p></div></div>
+    <div class="col-12 col-md-4"><div class="card-soft p-3 p-md-4 h-auto"><h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-folder-open text-royal me-2"></i>Required Documents</h3><p class="mb-0 small">{{ school.documents_required|linebreaksbr }}</p></div></div>
   </div>
 </section>
 {% endblock %}
@@ -427,17 +663,17 @@ main{margin:0;padding:0;border:0}
     "form_page.html": """{% extends "base.html" %}
 {% block title %}{{ title }} | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container">
+<section class="page-head"><div class="container text-center text-md-start">
   <h1 class="section-title">{{ title }}</h1>
-  <p class="mb-0">{{ intro }}</p>
+  <p class="mb-0 text-muted">{{ intro }}</p>
 </div></section>
 <section class="section container">
-  <div class="row justify-content-center"><div class="col-lg-8">
-    <div class="card-soft p-4 p-md-5 h-auto">
+  <div class="row justify-content-center"><div class="col-12 col-lg-8">
+    <div class="card-soft p-3 p-sm-4 p-md-5 h-auto">
       <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {% include "form_fields.html" %}
-        <button type="submit" class="btn btn-royal btn-lg mt-4">{{ submit_label }}</button>
+        <button type="submit" class="btn btn-royal btn-lg mt-4 btn-submit-mobile">{{ submit_label }}</button>
       </form>
     </div>
   </div></div>
@@ -449,14 +685,18 @@ main{margin:0;padding:0;border:0}
 {% block title %}Application Submitted | {{ school.name }}{% endblock %}
 {% block content %}
 <section class="section container">
-  <div class="row justify-content-center"><div class="col-lg-7">
-    <div class="card-soft p-5 text-center h-auto">
+  <div class="row justify-content-center"><div class="col-12 col-lg-7">
+    <div class="card-soft p-4 p-sm-5 text-center h-auto">
       <i class="fa-solid fa-circle-check text-success" style="font-size:3.5rem"></i>
       <h1 class="section-title mt-3">Application Submitted</h1>
-      <p>Aapki application mil gayi hai. Yeh reference number surakshit rakhein:</p>
-      <p class="fs-3 fw-bold" style="color:var(--royal);letter-spacing:2px">{{ application.reference }}</p>
-      <p class="small text-muted">Student: {{ application.student_name }} · Class: {{ application.class_applying }} · Status: {{ application.get_status_display }}</p>
-      <a href="{% url 'home' %}" class="btn btn-royal mt-3">Back to Home</a>
+      <p class="text-muted">Aapki application safaltapoorvak prapt ho gayi hai. Yeh reference number note karein:</p>
+      <p class="fs-2 fw-bold text-break my-3" style="color:var(--royal);letter-spacing:1px">{{ application.reference }}</p>
+      <div class="bg-light p-3 rounded-3 my-3 text-start small border">
+        <div class="mb-1"><strong>Student Name:</strong> {{ application.student_name }}</div>
+        <div class="mb-1"><strong>Class Applying:</strong> {{ application.class_applying }}</div>
+        <div><strong>Status:</strong> <span class="badge bg-success">{{ application.get_status_display }}</span></div>
+      </div>
+      <a href="{% url 'home' %}" class="btn btn-royal btn-lg w-100 w-sm-auto mt-2">Back to Home</a>
     </div>
   </div></div>
 </section>
@@ -466,19 +706,19 @@ main{margin:0;padding:0;border:0}
     "achievements.html": """{% extends "base.html" %}
 {% block title %}Achievements | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">Achievements</h1><p class="mb-0">Academic, CBSE board, sports, awards aur competitions.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Achievements</h1><p class="mb-0 text-muted">Academic, CBSE board, sports, awards aur competitions.</p></div></section>
 <section class="section container">
-  <div class="mb-4 d-flex flex-wrap gap-2">
+  <div class="category-scroll-bar mb-4">
     <a href="?" class="btn btn-sm {% if not current %}btn-royal{% else %}btn-outline-primary{% endif %}">All</a>
     {% for key, label in categories %}
       <a href="?cat={{ key }}" class="btn btn-sm {% if current == key %}btn-royal{% else %}btn-outline-primary{% endif %}">{{ label }}</a>
     {% endfor %}
   </div>
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     {% for a in page.object_list %}
-    <div class="col-md-6 col-lg-4"><div class="card-soft p-4">
+    <div class="col-12 col-sm-6 col-lg-4"><div class="card-soft p-3 p-md-4">
       <span class="badge bg-light text-primary mb-2">{{ a.get_category_display }} · {{ a.year }}</span>
-      <h5>{{ a.title }}</h5>
+      <h5 class="h6 fw-bold mb-2">{{ a.title }}</h5>
       <p class="small text-muted mb-0">{% if a.student_name %}{{ a.student_name }} — {% endif %}{{ a.description }}</p>
     </div></div>
     {% empty %}<p class="text-muted">Is category me abhi koi achievement nahi hai.</p>
@@ -492,18 +732,18 @@ main{margin:0;padding:0;border:0}
     "news.html": """{% extends "base.html" %}
 {% block title %}News & Events | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">News &amp; Events</h1><p class="mb-0">Latest school news aur aane wale events.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">News &amp; Events</h1><p class="mb-0 text-muted">Latest school news aur aane wale events.</p></div></section>
 <section class="section container">
   <div class="row g-4">
-    <div class="col-lg-8">
-      <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <div class="row g-3 g-md-4">
         {% for item in page.object_list %}
-        <div class="col-md-6"><article class="card-soft overflow-hidden">
-          {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" style="width:100%;height:200px;object-fit:cover">{% endif %}
-          <div class="p-4">
+        <div class="col-12 col-md-6"><article class="card-soft overflow-hidden">
+          {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" style="width:100%;height:180px;object-fit:cover">{% endif %}
+          <div class="p-3 p-md-4">
             <span class="badge bg-light text-primary mb-2">{{ item.get_kind_display }} · {{ item.date|date:"d M Y" }}</span>
-            <h3 class="h5">{{ item.title }}</h3>
-            <p class="small text-muted mb-0">{{ item.body|truncatewords:30 }}</p>
+            <h3 class="h6 fw-bold mb-2">{{ item.title }}</h3>
+            <p class="small text-muted mb-0">{{ item.body|truncatewords:28 }}</p>
           </div>
         </article></div>
         {% empty %}<p class="text-muted">Abhi koi news nahi hai.</p>
@@ -511,12 +751,16 @@ main{margin:0;padding:0;border:0}
       </div>
       {% include "pagination.html" %}
     </div>
-    <aside class="col-lg-4">
-      <div class="card-soft p-4 h-auto">
-        <h3 class="h5">Upcoming Events</h3>
+    <aside class="col-12 col-lg-4">
+      <div class="card-soft p-3 p-md-4 h-auto">
+        <h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-calendar-days text-gold me-2"></i>Upcoming Events</h3>
         {% for e in upcoming %}
-          <div class="mb-3"><strong>{{ e.event_date|date:"d M Y" }}</strong><br>{{ e.title }}{% if e.venue %} · {{ e.venue }}{% endif %}</div>
-        {% empty %}<p class="small text-muted">Koi upcoming event nahi hai.</p>
+          <div class="mb-3 pb-3 border-bottom border-light">
+            <span class="badge bg-warning text-dark mb-1">{{ e.event_date|date:"d M Y" }}</span>
+            <div class="fw-bold text-navy">{{ e.title }}</div>
+            {% if e.venue %}<div class="small text-muted"><i class="fa-solid fa-location-dot me-1"></i>{{ e.venue }}</div>{% endif %}
+          </div>
+        {% empty %}<p class="small text-muted mb-0">Koi upcoming event nahi hai.</p>
         {% endfor %}
       </div>
     </aside>
@@ -528,20 +772,22 @@ main{margin:0;padding:0;border:0}
     "gallery.html": """{% extends "base.html" %}
 {% block title %}Gallery | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">Gallery</h1><p class="mb-0">Events aur campus ki jhalkiyan.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Gallery</h1><p class="mb-0 text-muted">Events aur campus ki jhalkiyan.</p></div></section>
 <section class="section container">
-  <div class="mb-4 d-flex flex-wrap gap-2">
+  <div class="category-scroll-bar mb-4">
     <a href="?" class="btn btn-sm {% if not current %}btn-royal{% else %}btn-outline-primary{% endif %}">All</a>
     {% for key, label in categories %}
       <a href="?cat={{ key }}" class="btn btn-sm {% if current == key %}btn-royal{% else %}btn-outline-primary{% endif %}">{{ label }}</a>
     {% endfor %}
   </div>
-  <div class="row g-3">
+  <div class="row g-2 g-md-3">
     {% for g in page.object_list %}
     <div class="col-6 col-md-4 col-lg-3">
+      {% if g.image %}
       <a href="{{ g.image.url }}" target="_blank" rel="noopener" title="{{ g.caption }}">
         <img class="gallery-img" src="{{ g.image.url }}" alt="{{ g.alt_text|default:g.caption }}">
       </a>
+      {% endif %}
     </div>
     {% empty %}<p class="text-muted">Is category me abhi photos nahi hain.</p>
     {% endfor %}
@@ -554,19 +800,26 @@ main{margin:0;padding:0;border:0}
     "disclosure.html": """{% extends "base.html" %}
 {% block title %}Mandatory Public Disclosure | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">Mandatory Public Disclosure</h1><p class="mb-0">CBSE affiliation, recognition, infrastructure, results, fee structure aur committee ke documents.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Mandatory Public Disclosure</h1><p class="mb-0 text-muted">CBSE affiliation, recognition, infrastructure, results, fee structure aur committee ke documents.</p></div></section>
 <section class="section container">
   {% for label, docs in groups %}
     {% if docs %}
-    <h2 class="h4 mt-4">{{ label }}</h2>
-    <ul class="list-group mb-4">
+    <h2 class="h5 fw-bold text-navy mt-4 mb-3">{{ label }}</h2>
+    <div class="list-group mb-4 shadow-sm">
       {% for d in docs %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>{{ d.title }} <small class="text-muted">({{ d.published_on|date:"d M Y" }})</small></span>
-        <a href="{{ d.file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-royal">PDF</a>
-      </li>
+      <div class="list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 p-3">
+        <div>
+          <span class="fw-semibold text-navy">{{ d.title }}</span>
+          <div class="small text-muted">Published: {{ d.published_on|date:"d M Y" }}</div>
+        </div>
+        {% if d.file %}
+        <a href="{{ d.file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-royal flex-shrink-0 align-self-stretch align-self-sm-auto"><i class="fa-solid fa-file-pdf me-1"></i>View PDF</a>
+        {% else %}
+        <span class="badge bg-light text-secondary border align-self-start align-self-sm-center py-2 px-3">Available on Campus</span>
+        {% endif %}
+      </div>
       {% endfor %}
-    </ul>
+    </div>
     {% endif %}
   {% empty %}<p class="text-muted">Documents jald upload honge.</p>
   {% endfor %}
@@ -577,28 +830,31 @@ main{margin:0;padding:0;border:0}
     "contact.html": """{% extends "base.html" %}
 {% block title %}Contact Us | {{ school.name }}{% endblock %}
 {% block content %}
-<section class="page-head"><div class="container"><h1 class="section-title">Contact Us</h1><p class="mb-0">Koi sawal ho to message bhejiye. Hum jaldi sampark karenge.</p></div></section>
+<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Contact Us</h1><p class="mb-0 text-muted">Koi sawal ho to message bhejiye. Hum jaldi sampark karenge.</p></div></section>
 <section class="section container">
   <div class="row g-4">
-    <div class="col-lg-7">
-      <div class="card-soft p-4 p-md-5 h-auto">
+    <div class="col-12 col-lg-7">
+      <div class="card-soft p-3 p-sm-4 p-md-5 h-auto">
+        <h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-paper-plane text-royal me-2"></i>Send Us a Message</h3>
         <form method="post" novalidate>
           {% csrf_token %}
           {% include "form_fields.html" %}
-          <button type="submit" class="btn btn-royal btn-lg mt-4">Send message</button>
+          <button type="submit" class="btn btn-royal btn-lg mt-4 btn-submit-mobile"><i class="fa-solid fa-paper-plane me-2"></i>Send message</button>
         </form>
       </div>
     </div>
-    <div class="col-lg-5">
-      <div class="card-soft p-4 h-auto mb-4">
-        <h3 class="h5">School Address</h3>
-        <p><i class="fa-solid fa-location-dot me-2"></i>{{ school.address }}</p>
-        <p><i class="fa-solid fa-phone me-2"></i>{{ school.phone }}</p>
-        <p><i class="fa-solid fa-envelope me-2"></i>{{ school.email }}</p>
-        <p class="mb-0"><i class="fa-regular fa-clock me-2"></i>{{ school.working_hours }}</p>
+    <div class="col-12 col-lg-5">
+      <div class="card-soft p-3 p-md-4 h-auto mb-4">
+        <h3 class="h5 fw-bold text-navy mb-3"><i class="fa-solid fa-school text-royal me-2"></i>School Address</h3>
+        <p class="mb-2"><i class="fa-solid fa-location-dot text-danger me-2"></i>{{ school.address }}</p>
+        <p class="mb-2"><a href="tel:{{ school.phone|slice:':12' }}" class="text-decoration-none text-navy fw-semibold"><i class="fa-solid fa-phone text-success me-2"></i>{{ school.phone }}</a></p>
+        <p class="mb-2"><a href="mailto:{{ school.email }}" class="text-decoration-none text-navy"><i class="fa-solid fa-envelope text-primary me-2"></i>{{ school.email }}</a></p>
+        <p class="mb-0 small text-muted"><i class="fa-regular fa-clock text-secondary me-2"></i>{{ school.working_hours }}</p>
       </div>
       {% if school.map_embed_url %}
-      <iframe class="map" src="{{ school.map_embed_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="School location on Google Maps"></iframe>
+      <div class="card-soft overflow-hidden p-1">
+        <iframe class="map" src="{{ school.map_embed_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="School location on Google Maps"></iframe>
+      </div>
       {% endif %}
     </div>
   </div>
