@@ -305,7 +305,6 @@ main { min-height: 50vh; }
         <li class="nav-item"><a class="nav-link" href="{% url 'achievements' %}"><i class="fa-solid fa-trophy d-lg-none"></i>Achievements</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'news' %}"><i class="fa-solid fa-newspaper d-lg-none"></i>News &amp; Events</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}"><i class="fa-solid fa-images d-lg-none"></i>Gallery</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'disclosure' %}"><i class="fa-solid fa-file-shield d-lg-none"></i>Disclosure</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}"><i class="fa-solid fa-envelope d-lg-none"></i>Contact</a></li>
         <li class="nav-item ms-lg-2 my-1"><a class="btn btn-gold btn-sm px-3 nav-apply-btn" href="{% url 'apply' %}">Apply Now</a></li>
       </ul>
@@ -338,9 +337,10 @@ main { min-height: 50vh; }
       <div class="col-12 col-md-4">
         <h6 class="text-white">Quick Links</h6>
         <ul class="list-unstyled small">
+          <li><a href="{% url 'about' %}">About School</a></li>
+          <li><a href="{% url 'academics' %}">Academics &amp; Streams</a></li>
           <li><a href="{% url 'enquiry' %}">Admission Enquiry</a></li>
           <li><a href="{% url 'apply' %}">Online Application</a></li>
-          <li><a href="{% url 'disclosure' %}">Mandatory Public Disclosure</a></li>
           <li><a href="{% url 'contact' %}">Contact Us</a></li>
         </ul>
       </div>
@@ -793,36 +793,6 @@ main { min-height: 50vh; }
     {% endfor %}
   </div>
   {% include "pagination.html" %}
-</section>
-{% endblock %}
-""",
-
-    "disclosure.html": """{% extends "base.html" %}
-{% block title %}Mandatory Public Disclosure | {{ school.name }}{% endblock %}
-{% block content %}
-<section class="page-head"><div class="container text-center text-md-start"><h1 class="section-title">Mandatory Public Disclosure</h1><p class="mb-0 text-muted">CBSE affiliation, recognition, infrastructure, results, fee structure aur committee ke documents.</p></div></section>
-<section class="section container">
-  {% for label, docs in groups %}
-    {% if docs %}
-    <h2 class="h5 fw-bold text-navy mt-4 mb-3">{{ label }}</h2>
-    <div class="list-group mb-4 shadow-sm">
-      {% for d in docs %}
-      <div class="list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 p-3">
-        <div>
-          <span class="fw-semibold text-navy">{{ d.title }}</span>
-          <div class="small text-muted">Published: {{ d.published_on|date:"d M Y" }}</div>
-        </div>
-        {% if d.file %}
-        <a href="{{ d.file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-royal flex-shrink-0 align-self-stretch align-self-sm-auto"><i class="fa-solid fa-file-pdf me-1"></i>View PDF</a>
-        {% else %}
-        <span class="badge bg-light text-secondary border align-self-start align-self-sm-center py-2 px-3">Available on Campus</span>
-        {% endif %}
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-  {% empty %}<p class="text-muted">Documents jald upload honge.</p>
-  {% endfor %}
 </section>
 {% endblock %}
 """,
@@ -1406,14 +1376,6 @@ def gallery(request):
         page=page, categories=GalleryImage.Category.choices, current=cat))
 
 
-def disclosure(request):
-    groups = [
-        (label, Disclosure.objects.filter(category=key, is_public=True))
-        for key, label in Disclosure.Category.choices
-    ]
-    return render(request, "disclosure.html", ctx(groups=groups))
-
-
 def contact(request):
     form = ContactForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -1425,7 +1387,7 @@ def contact(request):
 
 def sitemap_xml(request):
     names = ["home", "about", "academics", "infrastructure", "admissions", "enquiry",
-             "apply", "achievements", "news", "gallery", "disclosure", "contact"]
+             "apply", "achievements", "news", "gallery", "contact"]
     base = request.build_absolute_uri("/").rstrip("/")
     urls = "".join(f"<url><loc>{base}{reverse(n)}</loc></url>" for n in names)
     xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>'
@@ -1450,7 +1412,6 @@ urlpatterns = [
     path("achievements/", achievements, name="achievements"),
     path("news-events/", news, name="news"),
     path("gallery/", gallery, name="gallery"),
-    path("disclosure/", disclosure, name="disclosure"),
     path("contact/", contact, name="contact"),
     path("sitemap.xml", sitemap_xml, name="sitemap"),
     path("robots.txt", robots_txt, name="robots"),
